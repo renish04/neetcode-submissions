@@ -1,0 +1,38 @@
+class Solution:
+    def carFleet(self, target: int, position: List[int], speed: List[int]) -> int:
+        if len(position) == 1:
+            return 1
+
+        hashmap = {}
+
+        for i in range(len(position)):
+            hashmap[position[i]] = speed[i]
+        
+        position.sort()
+        
+        fleet = 0
+
+        while position:
+            r = position.pop()
+            fleet += 1
+
+            factor = (target - r) / hashmap[r]
+
+            r += factor*hashmap[r]
+            if position:
+                s = (position[-1] + factor*hashmap[position[-1]])
+
+            while position and s >= target:
+                
+                if s >= r:
+                    position.pop()
+                    
+                else:
+                    fleet += 1
+                    position.pop()
+                
+                if position:
+                    s = (position[-1] + factor*hashmap[position[-1]])
+        
+        return fleet
+
